@@ -48,12 +48,27 @@ jobs:
       
       - name: Terraform plan
         id: plan
-        run: terraform plan
+        run: terraform plan -no-color
         env:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
            AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY  }}
            AWS_SESSION_TOKEN : ${{ secrets.AWS_SESSION_TOKEN  }}
-           
+      
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -auto-approve
+        env:
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+           AWS_SESSION_TOKEN : ${{ secrets.AWS_SESSION_TOKEN  }}
+                 
+      - name: Terraform destroy
+        id: destroy
+        run: terraform destroy -auto-approve
+        env:
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+           AWS_SESSION_TOKEN : ${{ secrets.AWS_SESSION_TOKEN  }}
            
       - name: Update Pull Request
         uses: actions/github-script@0.9.0
@@ -65,6 +80,8 @@ jobs:
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Apply 🖌\`${{ steps.apply.outcome }}\`
+            #### Terraform Destroy \`${{ steps.destroy.outcome }}\`
             <details><summary>Show Plan</summary>
             \`\`\`${process.env.PLAN}\`\`\`
             </details>
