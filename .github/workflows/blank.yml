@@ -31,12 +31,15 @@ jobs:
            terraform_version: 0.14.7
       
       - name: Terraform init
+        id: init
         run: terraform init
         
       - name: Terraform fmt
+        id: fmt
         run: terraform fmt
         
       - name: Terraform validate
+        id: validate
         run: terraform validate
       
       - name: Terraform plan
